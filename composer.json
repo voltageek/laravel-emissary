@@ -1,0 +1,44 @@
+{
+    "name": "voltageek/laravel-emissary",
+    "description": "Agentic, multi-channel conversational AI for Laravel applications",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.3",
+        "illuminate/support": "^11.0",
+        "illuminate/database": "^11.0",
+        "illuminate/http": "^11.0",
+        "illuminate/console": "^11.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "nesbot/carbon": "^3.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^4.0",
+        "orchestra/testbench": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Emissary\\": "src/",
+            "Emissary\\Testing\\": "src/Testing/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Emissary\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Emissary\\EmissaryServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

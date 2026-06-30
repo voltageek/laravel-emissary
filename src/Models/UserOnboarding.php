@@ -1,0 +1,41 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Emissary\Models;
+
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class UserOnboarding extends Model
+{
+    use HasUuids;
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'user_id',
+        'conversation_id',
+        'status',
+        'profile',
+        'consent_at',
+        'consent_version',
+        'created_at',
+        'completed_at',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'profile' => 'array',
+            'consent_at' => 'datetime',
+            'completed_at' => 'datetime',
+        ];
+    }
+
+    public function conversation(): BelongsTo
+    {
+        return $this->belongsTo(Conversation::class);
+    }
+}

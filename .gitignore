@@ -1,0 +1,13 @@
+vendor/
+*.log
+*.cache
+.env
+.phpunit.cache
+.phpunit.result.cache
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/
+tests/Fixtures/Agent/*.json

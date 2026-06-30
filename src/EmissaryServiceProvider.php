@@ -68,9 +68,23 @@ class EmissaryServiceProvider extends ServiceProvider
             __DIR__ . '/../database/migrations/' => database_path('migrations'),
         ], 'emissary-migrations');
 
+        $this->publishes([
+            __DIR__ . '/../resources/views/widget.blade.php' => resource_path('views/vendor/emissary/widget.blade.php'),
+        ], 'emissary-views');
+
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'emissary');
+
+        if (file_exists(__DIR__ . '/../routes/webhooks.php')) {
+            $this->loadRoutesFrom(__DIR__ . '/../routes/webhooks.php');
+        }
+
         if ($this->app->runningInConsole()) {
             $this->commands([
-
+                \Emissary\Commands\EmissaryChannelsList::class,
+                \Emissary\Commands\EmissaryWebhookUrl::class,
+                \Emissary\Commands\EmissarySetTelegramWebhook::class,
+                \Emissary\Commands\EmissaryChannelTest::class,
+                \Emissary\Commands\EmissaryChannelAdd::class,
             ]);
         }
     }
@@ -78,7 +92,13 @@ class EmissaryServiceProvider extends ServiceProvider
     protected function bootPluginProviders(): void
     {
         $this->app->booted(function (): void {
-            $providers = $this->app->tagged('emissary.providers');
+            $guardRegistry = $this->app[GuardRegistry::class];
+            $guardRegistry->register(new \Emissary\Guards\RateLimitGuard());
+            $guardRegistry->register(new \Emissary\Guards\JailbreakDetectionGuard());
+            $guardRegistry->register(new \Emissary\Guards\CostCapGuard());
+            $guardRegistry->register(new \Emissary\Guards\MaxTurnsGuard());
+            $guardRegistry->register(new \Emissary\Guards\AuthenticatedUserGuard());
+            $guardRegistry->register(new \Emissary\Guards\OnboardingGuard());
 
             foreach ($providers as $provider) {
                 if ($provider instanceof Contracts\AgentToolProvider) {

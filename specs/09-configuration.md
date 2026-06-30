@@ -1,6 +1,6 @@
 # Configuration & Wiring
 
-> config/agent.php, service-provider bindings, plugin registration.
+> config/emissary.php, service-provider bindings, plugin registration.
 
 ---
 
@@ -60,7 +60,7 @@ return [
 
     // Channel adapters + credentials (read by ConfigChannelCredentialStore).
     // Multi-tenant apps swap the store binding to EncryptedChannelCredentialStore
-    // and provision via `agent:channel:add` instead of these env keys.
+    // and provision via `emissary:channel:add` instead of these env keys.
     'webhook_path' => 'webhooks',   // route prefix; absolute URL uses APP_URL
 
     'channels' => [
@@ -119,7 +119,7 @@ return [
         'require_webhook_verify'=> true,  // hard-fail (401) when ChannelAdapter::verify() is false
     ],
 
-    // Data retention — enforced by `php artisan agent:prune`
+    // Data retention — enforced by `php artisan emissary:prune`
     'retention' => [
         'message_ttl_days' => 90,
         'event_ttl_days'   => 90,
@@ -157,7 +157,7 @@ return [
 
 ```
 1. Plugin ServiceProvider::boot()
-   → $this->app->tag([MyPluginProvider::class], 'agent.providers')
+   → $this->app->tag([MyPluginProvider::class], 'emissary.providers')
 
 2. AppServiceProvider::boot() → bootAgentProviders() (in $app->booted() callback)
    For each tagged AgentToolProvider:
@@ -192,17 +192,17 @@ $app->bind(TenancyResolver::class, NullTenancyResolver::class);
 // Channel identity — resolves the ?Authenticatable user behind a message.
 // Mode-gated: GuestCreatingChannelIdentityResolver when onboarding.mode is
 // channel_first|hybrid (creates guests on first chat contact); AuthChannelIdentityResolver otherwise.
-$app->bind(ChannelIdentityResolver::class, match (config('agent.onboarding.mode')) {
+$app->bind(ChannelIdentityResolver::class, match (config('emissary.onboarding.mode')) {
     'channel_first', 'hybrid' => GuestCreatingChannelIdentityResolver::class,
     default                    => AuthChannelIdentityResolver::class,
 });
 
 // Channel credentials — default reads config/env; swap for EncryptedChannelCredentialStore (DB-backed)
-$app->bind(ChannelCredentialStore::class, config('agent.channel_credential_store'));
+$app->bind(ChannelCredentialStore::class, config('emissary.channel_credential_store'));
 
 // Interface → implementation
 $app->bind(ConfirmationGate::class, DatabaseConfirmationGate::class);
 
 // Plugin tagging (done by plugin service providers)
-$app->tag([MyPluginAgentToolProvider::class], 'agent.providers');
+$app->tag([MyPluginAgentToolProvider::class], 'emissary.providers');
 ```

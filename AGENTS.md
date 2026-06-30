@@ -23,7 +23,7 @@ Start at **`specs/README.md`** (the index). It maps every concept to a file. Fil
 - `06-security.md` — threat model.
 - `07-channels.md` — getting a channel live.
 - `08-user-onboarding.md` — first-contact journey.
-- `09-configuration.md` — `config/agent.php`, bindings, registration.
+- `09-configuration.md` — `config/emissary.php`, bindings, registration.
 - `10-commands-testing.md` — Artisan commands + the test toolkit.
 - `11-decisions.md` — the 17 design decisions + dependencies + migration path.
 

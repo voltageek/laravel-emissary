@@ -18,7 +18,7 @@ The spec is split by concern so an implementing agent loads only the relevant sl
 | [`06-security.md`](06-security.md) | The 6 attack surfaces, consent, retention/PII | hardening / compliance |
 | [`07-channels.md`](07-channels.md) | Channel onboarding: credential matrix, webhook routes, per-channel setup | getting a channel live |
 | [`08-user-onboarding.md`](08-user-onboarding.md) | First-contact flow, modes, consent gate, guest creation | onboarding behaviour |
-| [`09-configuration.md`](09-configuration.md) | `config/agent.php`, service-provider bindings, plugin registration | wiring/configuring |
+| [`09-configuration.md`](09-configuration.md) | `config/emissary.php`, service-provider bindings, plugin registration | wiring/configuring |
 | [`10-commands-testing.md`](10-commands-testing.md) | Artisan commands + the Pest `Emissary\Testing\` toolkit | testing / debugging |
 | [`11-decisions.md`](11-decisions.md) | 17 key design decisions, dependencies, migration path | you're unsure *why* something is the way it is |
 

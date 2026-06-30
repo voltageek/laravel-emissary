@@ -316,7 +316,7 @@ This replaces the earlier "verification flow you ship" hand-wave with a concrete
 
 ### ChannelCredentialStore
 
-Resolves the credentials (tokens, sender identities, verify secrets) for a channel, optionally scoped to a tenant. `ChannelAdapter::verify()` and `send()` resolve credentials **through this seam** rather than reading config directly — that decoupling is what makes onboarding hybrid. The default `ConfigChannelCredentialStore` reads `config/agent.php` + env, so single-app installs work unchanged; multi-tenant apps bind a DB-backed implementation (the library ships `EncryptedChannelCredentialStore` over the `ChannelConfig` table) and provision channels per tenant at runtime.
+Resolves the credentials (tokens, sender identities, verify secrets) for a channel, optionally scoped to a tenant. `ChannelAdapter::verify()` and `send()` resolve credentials **through this seam** rather than reading config directly — that decoupling is what makes onboarding hybrid. The default `ConfigChannelCredentialStore` reads `config/emissary.php` + env, so single-app installs work unchanged; multi-tenant apps bind a DB-backed implementation (the library ships `EncryptedChannelCredentialStore` over the `ChannelConfig` table) and provision channels per tenant at runtime.
 
 ```php
 interface ChannelCredentialStore
@@ -337,7 +337,7 @@ readonly class ChannelCredentials
 }
 ```
 
-A `null` result means "this channel/tenant is not provisioned"; the adapter treats it as a verification failure (fail closed) rather than erroring. This is what lets `agent:channel:test` and per-tenant provisioning distinguish *misconfigured* from *absent*.
+A `null` result means "this channel/tenant is not provisioned"; the adapter treats it as a verification failure (fail closed) rather than erroring. This is what lets `emissary:channel:test` and per-tenant provisioning distinguish *misconfigured* from *absent*.
 
 ---
 
@@ -431,7 +431,7 @@ final class AgentError
 }
 ```
 
-Default user messages for each code are defined in `config/agent.php` under `error_messages` and are used by `MessageBridge::reply()` when an error terminates the pipeline.
+Default user messages for each code are defined in `config/emissary.php` under `error_messages` and are used by `MessageBridge::reply()` when an error terminates the pipeline.
 
 ---
 

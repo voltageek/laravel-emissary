@@ -8,17 +8,17 @@
 
 | Command | Purpose |
 |---|---|
-| `agent:report [--conversation=] [--since=] [--model=]` | Prints an aggregate summary: turns, p50/p95 latency, total tokens & cost, error rate by code, top tools by call count / failure rate, and guard-denial counts. Reads `agent_events` + `tool_invocations` + `cost_ledgers`. |
-| `agent:replay <turn_id> [--re-run]` | Prints the ordered trace for one turn — guards → intent → (LLM call ↔ tool invocation ↔ span)… → reply — reconstructed from `agent_events`, `tool_invocations`, `ConversationMessage` (and `llm_payloads` / `agent_spans` if captured). `--re-run` re-sends each captured `request_messages` + `tools_sent` to the same model and diffs the response, for "did the model behave differently?" reproduction (requires `observability.capture_llm_payloads`; LLM non-determinism is expected and shown as a diff). |
-| `agent:prune` | Deletes rows older than their TTL across `conversation_messages`, `agent_events`, `tool_invocations`, `llm_payloads`, and `agent_spans`. Intended for a scheduled runner. |
-| `agent:channels:list` | Lists configured (static) or provisioned (dynamic) channels with status — used to confirm what's live. |
-| `agent:webhook:url <channel>` | Prints the absolute webhook URL to paste into the provider's console (uses `APP_URL` + `webhook_path`). |
-| `agent:set-telegram-webhook` | Calls Telegram's `setWebhook` with the app URL + `TELEGRAM_SECRET_TOKEN`. Run once after bot creation. |
-| `agent:channel:test <channel> [--tenant=]` | Round-trip health check: resolves credentials via the store, confirms the webhook is reachable, and sends a test outbound message. |
-| `agent:channel:add <channel> [--tenant=]` | Interactively provisions a new channel's credentials into the DB-backed store (`EncryptedChannelCredentialStore` only). |
-| `agent:onboarding:status <channel_ref>` | Prints the onboarding state + profile/consent for a conversation's sender (for support/debugging). |
-| `agent:onboarding:reset <channel_ref>` | Resets `onboarding_state` to `new` and clears the `UserOnboarding` record, so the flow re-runs (for testing or re-consent). |
-| `agent:fixture:capture <turn_id> [--name=]` | Exports a captured turn (messages, `llm_payloads`, `tool_invocations`, events) to `tests/Fixtures/Agent/<name>.json` for use as a Pest regression dataset (see Testing → Replay-as-fixture). Requires `observability.capture_llm_payloads`. |
+| `emissary:report [--conversation=] [--since=] [--model=]` | Prints an aggregate summary: turns, p50/p95 latency, total tokens & cost, error rate by code, top tools by call count / failure rate, and guard-denial counts. Reads `agent_events` + `tool_invocations` + `cost_ledgers`. |
+| `emissary:replay <turn_id> [--re-run]` | Prints the ordered trace for one turn — guards → intent → (LLM call ↔ tool invocation ↔ span)… → reply — reconstructed from `agent_events`, `tool_invocations`, `ConversationMessage` (and `llm_payloads` / `agent_spans` if captured). `--re-run` re-sends each captured `request_messages` + `tools_sent` to the same model and diffs the response, for "did the model behave differently?" reproduction (requires `observability.capture_llm_payloads`; LLM non-determinism is expected and shown as a diff). |
+| `emissary:prune` | Deletes rows older than their TTL across `conversation_messages`, `agent_events`, `tool_invocations`, `llm_payloads`, and `agent_spans`. Intended for a scheduled runner. |
+| `emissary:channels:list` | Lists configured (static) or provisioned (dynamic) channels with status — used to confirm what's live. |
+| `emissary:webhook:url <channel>` | Prints the absolute webhook URL to paste into the provider's console (uses `APP_URL` + `webhook_path`). |
+| `emissary:set-telegram-webhook` | Calls Telegram's `setWebhook` with the app URL + `TELEGRAM_SECRET_TOKEN`. Run once after bot creation. |
+| `emissary:channel:test <channel> [--tenant=]` | Round-trip health check: resolves credentials via the store, confirms the webhook is reachable, and sends a test outbound message. |
+| `emissary:channel:add <channel> [--tenant=]` | Interactively provisions a new channel's credentials into the DB-backed store (`EncryptedChannelCredentialStore` only). |
+| `emissary:onboarding:status <channel_ref>` | Prints the onboarding state + profile/consent for a conversation's sender (for support/debugging). |
+| `emissary:onboarding:reset <channel_ref>` | Resets `onboarding_state` to `new` and clears the `UserOnboarding` record, so the flow re-runs (for testing or re-consent). |
+| `emissary:fixture:capture <turn_id> [--name=]` | Exports a captured turn (messages, `llm_payloads`, `tool_invocations`, events) to `tests/Fixtures/Agent/<name>.json` for use as a Pest regression dataset (see Testing → Replay-as-fixture). Requires `observability.capture_llm_payloads`. |
 
 ---
 
@@ -74,8 +74,8 @@ Assertion set: `assertReply`, `assertReplyCount`, `assertToolCalled`, `assertInt
 
 Captured production turns become regression tests, reusing the v2.3 replay infra:
 
-1. A turn misbehaves in prod → debug with `agent:replay <turn_id>`.
-2. Freeze it: `agent:fixture:capture <turn_id> --name=place_order_overflow` writes `tests/Fixtures/Agent/place_order_overflow.json` (messages, `llm_payloads`, `tool_invocations`, events).
+1. A turn misbehaves in prod → debug with `emissary:replay <turn_id>`.
+2. Freeze it: `emissary:fixture:capture <turn_id> --name=place_order_overflow` writes `tests/Fixtures/Agent/place_order_overflow.json` (messages, `llm_payloads`, `tool_invocations`, events).
 3. Replay against `FakeLlmClient` and assert the outcome:
 
 ```php
@@ -84,7 +84,7 @@ it('regresses: place_order overflow is blocked', fn ($fixture) => {
 })->dataset('agent/fixtures', fn () => glob(__DIR__.'/Fixtures/Agent/*.json'));
 ```
 
-By default a fixture replays against its **captured** model responses (deterministic); live re-run semantics mirror `agent:replay --re-run`. Note fixtures bind to model id and `consent_version` — a model migration may require re-freezing.
+By default a fixture replays against its **captured** model responses (deterministic); live re-run semantics mirror `emissary:replay --re-run`. Note fixtures bind to model id and `consent_version` — a model migration may require re-freezing.
 
 ### Coverage by layer
 
@@ -96,4 +96,4 @@ By default a fixture replays against its **captured** model responses (determini
 | Plugin | provider's tools resolve to the expected schema, guards fire at the right checkpoint, confirmation templates register | `AgentTestCase` helpers against a real provider |
 
 ### What is never tested live
-LLM inference, channel webhook/Send APIs, and the wall clock. The fakes replace all three; `agent:channel:test` remains the only live verification and is a smoke check, not a test.
+LLM inference, channel webhook/Send APIs, and the wall clock. The fakes replace all three; `emissary:channel:test` remains the only live verification and is a smoke check, not a test.

@@ -37,7 +37,7 @@ error_code      varchar nullable  — populated on error responses
 created_at      timestamp
 ```
 
-**Retention:** Message and event rows are prunable by age via the `agent:prune` Artisan command, governed by `retention.message_ttl_days` / `retention.event_ttl_days` (plus `payload_ttl_days` and `span_ttl_days` for the opt-in capture tables). Conversation transcripts may contain PII or accidentally-typed secrets; set a TTL appropriate to your compliance posture. The `content` column is **not** encrypted at rest by default — apps handling sensitive data should encrypt it or avoid storing raw transcripts.
+**Retention:** Message and event rows are prunable by age via the `emissary:prune` Artisan command, governed by `retention.message_ttl_days` / `retention.event_ttl_days` (plus `payload_ttl_days` and `span_ttl_days` for the opt-in capture tables). Conversation transcripts may contain PII or accidentally-typed secrets; set a TTL appropriate to your compliance posture. The `content` column is **not** encrypted at rest by default — apps handling sensitive data should encrypt it or avoid storing raw transcripts.
 
 ### AgentEvent
 The unified trace log. One row per observable signal; `kind` discriminates the payload shape. Every row carries the `turn_id` of the inbound message that caused it, so a full turn is reconstructed with `WHERE turn_id = ? ORDER BY created_at`.
@@ -83,7 +83,7 @@ created_at      timestamp
 ```
 
 ### LlmPayload *(optional — only if CaptureLlmPayload listener is registered)*
-Replay-grade capture: the exact messages, tools schema, and response for one LLM call. Storage-heavy and may contain user PII; gated behind `observability.capture_llm_payloads` and bound by `retention.payload_ttl_days`. Powers `agent:replay --re-run`.
+Replay-grade capture: the exact messages, tools schema, and response for one LLM call. Storage-heavy and may contain user PII; gated behind `observability.capture_llm_payloads` and bound by `retention.payload_ttl_days`. Powers `emissary:replay --re-run`.
 ```
 id              UUID (PK)
 agent_event_id  UUID (FK → agent_events)

@@ -24,7 +24,7 @@
 
 ## Testing
 
-The agent loop is non-deterministic and talks to external services (LLM, channel APIs), so the library ships its own **Pest-first test toolkit** in a `Testing\` namespace (importable by host apps, mirroring `Illuminate\Testing`). Nothing in a test hits the network or a live model.
+The agent loop is non-deterministic and talks to external services (LLM, channel APIs), so the library ships its own **Pest-first test toolkit** in a `Emissary\Testing\` namespace (importable by host apps, mirroring `Illuminate\Testing`). Nothing in a test hits the network or a live model.
 
 ### Test doubles
 

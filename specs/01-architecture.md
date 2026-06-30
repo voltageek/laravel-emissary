@@ -6,7 +6,7 @@
 
 ## Purpose
 
-A standalone, reusable PHP library that adds agentic, multi-channel conversational capabilities to existing Laravel applications. Developers integrate by defining three things: **intents**, **tools**, and **guards**. The library handles everything else — routing, LLM calls, tool execution, memory, confirmation gates, and channel delivery.
+**Emissary** is a standalone, reusable PHP library (PHP namespace `Emissary\`) that adds agentic, multi-channel conversational capabilities to existing Laravel applications. Developers integrate by defining three things: **intents**, **tools**, and **guards**. The library handles everything else — routing, LLM calls, tool execution, memory, confirmation gates, and channel delivery.
 
 ---
 

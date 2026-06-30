@@ -1,9 +1,9 @@
-# AGENTS.md — implementing the Agent Library
+# AGENTS.md — implementing Emissary
 
 > Read this first. It frames every other file in `specs/` for an AI coding agent doing the implementation.
 
 ## Larger task (the "why")
-This is a **standalone, reusable PHP library** that adds agentic, multi-channel conversational capability to **existing Laravel applications**. The intended user of these specs is **you, the implementing agent**. Host-app developers integrate by defining three things — **intents, tools, guards** — and the library handles routing, LLM calls, tool execution, memory, confirmation gates, and channel delivery.
+**Emissary** is a **standalone, reusable PHP library** (PHP namespace `Emissary\`, Composer package `voltageek/laravel-emissary`) that adds agentic, multi-channel conversational capability to **existing Laravel applications**. The intended user of these specs is **you, the implementing agent**. Host-app developers integrate by defining three things — **intents, tools, guards** — and the library handles routing, LLM calls, tool execution, memory, confirmation gates, and channel delivery.
 
 The output that matters: a Composer package a Laravel app can `composer require`, publish a config + migrations, register a plugin, and have WhatsApp/Telegram/Web chat working — without touching their existing service layer.
 
@@ -29,8 +29,9 @@ Start at **`specs/README.md`** (the index). It maps every concept to a file. Fil
 
 ## Conventions (follow exactly)
 - **PHP 8.3+**: readonly classes, named arguments, match expressions, constructor property promotion.
+- **Namespace**: all code lives under `Emissary\` (e.g., `Emissary\Contracts\AgentToolProvider`, `Emissary\Testing\FakeLlmClient`). The internal `Agent*` class prefixes are kept (they name the concept, not the product).
 - **Tool definitions use the `#[Tool]` attribute** on provider methods — never a parallel handler map (see `02-contracts.md` → Attribute-Driven Tools).
-- **Tests are Pest-first**, in a `Testing\` namespace, importable by host apps (mirrors `Illuminate\Testing`). See `10-commands-testing.md`.
+- **Tests are Pest-first**, in the `Emissary\Testing\` namespace, importable by host apps (mirrors `Illuminate\Testing`). See `10-commands-testing.md`.
 - **No comments in code unless explicitly requested.** Docblocks on public interfaces are allowed and expected (they appear in the spec).
 - **Naming**: the spec is the source of truth for class/method/constant names — copy them verbatim; do not "improve" them.
 - **Security defaults are on**; opting out is explicit per-control in config (`06-security.md`).

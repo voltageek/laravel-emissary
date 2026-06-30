@@ -1,6 +1,8 @@
-# Agent Library — Spec Index
+# Emissary
 
-**Version**: 2.6.0 · **Status**: Draft
+> A standalone PHP library that adds agentic, multi-channel chat (WhatsApp/Telegram/Web) to existing Laravel apps. Developers define three things: **intents, tools, guards**.
+
+**Version**: 2.6.0 · **Status**: Draft · **Package**: `voltageek/laravel-emissary`
 
 The spec is split by concern so an implementing agent loads only the relevant slice. Start with `../AGENTS.md` for conventions and the definition-of-done, then the file you need from the map below.
 
@@ -17,7 +19,7 @@ The spec is split by concern so an implementing agent loads only the relevant sl
 | [`07-channels.md`](07-channels.md) | Channel onboarding: credential matrix, webhook routes, per-channel setup | getting a channel live |
 | [`08-user-onboarding.md`](08-user-onboarding.md) | First-contact flow, modes, consent gate, guest creation | onboarding behaviour |
 | [`09-configuration.md`](09-configuration.md) | `config/agent.php`, service-provider bindings, plugin registration | wiring/configuring |
-| [`10-commands-testing.md`](10-commands-testing.md) | Artisan commands + the Pest `Testing\` toolkit | testing / debugging |
+| [`10-commands-testing.md`](10-commands-testing.md) | Artisan commands + the Pest `Emissary\Testing\` toolkit | testing / debugging |
 | [`11-decisions.md`](11-decisions.md) | 17 key design decisions, dependencies, migration path | you're unsure *why* something is the way it is |
 
 ## Concept → file quick lookup

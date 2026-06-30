@@ -38,7 +38,7 @@
 
 16. **Hybrid user onboarding, opt-in** — A built-in, config-driven flow handles first-contact (welcome → profile capture → consent) composed from existing primitives (`start_onboarding` intent, `OnboardingGuard`, `update_profile`/`accept_consent` tools). The identity model is hybrid: web users link existing accounts via `verify_identity`, channel-first users get a guest `User` created on first contact and upgraded after onboarding. **Channel-first guest creation is configurable via `onboarding.mode`** (`web_centric` = no guests, link-only; `channel_first`/`hybrid` = guest creation). The whole feature defaults off, so existing apps see no behaviour change. Consent is an enforceable guard precondition, not a cosmetic prompt.
 
-17. **Testable by default** — The non-deterministic LLM and external channels are isolated behind a `Testing\` toolkit: `FakeLlmClient` (scripted agent loops), `FakeChannelAdapter` (in-process webhook→reply), and a `Clock` fake make the pipeline deterministic. `AgentTestCase` gives plugin authors Pest assertions over tools, guards, events, and turn outcomes. Replay-as-fixture closes the loop with v2.3: production turns captured for `agent:replay` are frozen into regression datasets by `agent:fixture:capture` — incidents become tests, no extra instrumentation.
+17. **Testable by default** — The non-deterministic LLM and external channels are isolated behind a `Emissary\Testing\` toolkit: `FakeLlmClient` (scripted agent loops), `FakeChannelAdapter` (in-process webhook→reply), and a `Clock` fake make the pipeline deterministic. `AgentTestCase` gives plugin authors Pest assertions over tools, guards, events, and turn outcomes. Replay-as-fixture closes the loop with v2.3: production turns captured for `agent:replay` are frozen into regression datasets by `agent:fixture:capture` — incidents become tests, no extra instrumentation.
 
 ---
 
@@ -49,15 +49,15 @@
 - **OpenRouter API** (or any OpenAI-compatible API) — LLM inference
 - **Carbon** — date/time handling
 - **Laravel 11+** (for initial extraction; library targets framework-agnostic in v2)
-- **Pest** *(dev only)* — the test toolkit ships Pest-first; PHPUnit shops can still use it since Pest runs on PHPUnit. The `Testing\` namespace (`FakeLlmClient`, `FakeChannelAdapter`, `Clock`, `AgentTestCase`) is importable by host apps.
+- **Pest** *(dev only)* — the test toolkit ships Pest-first; PHPUnit shops can still use it since Pest runs on PHPUnit. The `Emissary\Testing\` namespace (`FakeLlmClient`, `FakeChannelAdapter`, `Clock`, `AgentTestCase`) is importable by host apps.
 
 ---
 
 ## Migration Path to Standalone Library
 
 ### Phase 1: Extract interfaces and DTOs
-- Move all interfaces, DTOs, enums, and `AgentError` constants into `contracts/`
-- Ship the `Testing\` test doubles (`FakeLlmClient`, `FakeChannelAdapter`, `Clock`) alongside the contracts so components are testable from the first extraction
+- Move all interfaces, DTOs, enums, and `AgentError` constants into `src/Contracts/` (namespace `Emissary\Contracts`)
+- Ship the `Emissary\Testing\` test doubles (`FakeLlmClient`, `FakeChannelAdapter`, `Clock`) alongside the contracts so components are testable from the first extraction
 - No behavioral changes
 
 ### Phase 2: Extract pipeline components

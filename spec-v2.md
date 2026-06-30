@@ -1,4 +1,4 @@
-# This spec has moved
+# Emissary — spec has moved
 
 The single-file spec has been decomposed into a concern-per-file structure to make it easier for an AI implementing agent to load only the relevant slice.
 

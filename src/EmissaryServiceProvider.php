@@ -18,6 +18,8 @@ class EmissaryServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->app->register(EmissaryEventServiceProvider::class);
+
         $this->mergeConfigFrom(
             __DIR__ . '/../config/emissary.php', 'emissary'
         );
@@ -85,6 +87,12 @@ class EmissaryServiceProvider extends ServiceProvider
                 \Emissary\Commands\EmissarySetTelegramWebhook::class,
                 \Emissary\Commands\EmissaryChannelTest::class,
                 \Emissary\Commands\EmissaryChannelAdd::class,
+                \Emissary\Commands\EmissaryReport::class,
+                \Emissary\Commands\EmissaryReplay::class,
+                \Emissary\Commands\EmissaryPrune::class,
+                \Emissary\Commands\EmissaryOnboardingStatus::class,
+                \Emissary\Commands\EmissaryOnboardingReset::class,
+                \Emissary\Commands\EmissaryFixtureCapture::class,
             ]);
         }
     }

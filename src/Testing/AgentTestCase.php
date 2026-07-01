@@ -33,6 +33,7 @@ class AgentTestCase extends TestCase
     protected FakeChannelAdapter $channelAdapter;
     protected ?ProcessMessage $processMessage = null;
     protected array $receivedEvents = [];
+    protected array $toolCalls = [];
     protected string $conversationId = '';
 
     protected function setUp(): void
@@ -51,6 +52,12 @@ class AgentTestCase extends TestCase
         $this->app->bind(ConfirmationGate::class, DatabaseConfirmationGate::class);
 
         $this->receivedEvents = [];
+
+        $this->app['events']->listen('*', function (string $eventName, array $payload): void {
+            $this->receivedEvents[] = ['name' => $eventName, 'payload' => $payload];
+        });
+
+        $this->toolCalls = [];
     }
 
     protected function send(FakeChannelAdapter $adapter, string $text): self
@@ -139,7 +146,20 @@ class AgentTestCase extends TestCase
 
     public function assertToolCalled(string $toolName, ?callable $callback = null): self
     {
-        throw new RuntimeException('assertToolCalled: event tracking not yet wired.');
+        $found = false;
+
+        foreach ($this->llmClient->calls() as $call) {
+            $response = $call['response'] ?? null;
+
+            if ($response instanceof ToolCall && $response->name === $toolName) {
+                $found = true;
+                break;
+            }
+        }
+
+        if (! $found) {
+            throw new RuntimeException("Expected tool '{$toolName}' was not called.");
+        }
 
         return $this;
     }

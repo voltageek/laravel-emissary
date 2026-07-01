@@ -34,7 +34,7 @@ The `#[Tool]` attribute declares a method as agent-callable. The `ToolScanner` r
 
 The `ToolScanner` maps PHP type hints to JSON Schema types:
 
-```php
+```txt
 // Reflection           → JSON Schema
 string $name            → {"type": "string"}
 int $count              → {"type": "integer"}

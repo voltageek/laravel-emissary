@@ -69,7 +69,6 @@ public function recordSale(float $amount, string $item): string
 
 <details class="deep-dive">
     <summary>Deep Dive</summary>
-    <div class="deep-dive-content">
 
 ### The #[Tool] Attribute
 

@@ -58,7 +58,6 @@ Send a message to your bot on Telegram. You should see the agent respond.
 
 <details class="deep-dive">
     <summary>Deep Dive</summary>
-    <div class="deep-dive-content">
 
 ### Credential Matrix
 

@@ -29,7 +29,6 @@ The agent can now call `greet` with a `name` parameter.
 
 <details class="deep-dive">
     <summary>Deep Dive</summary>
-    <div class="deep-dive-content">
 
 ### How It Works
 

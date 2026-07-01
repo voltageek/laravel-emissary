@@ -45,7 +45,6 @@ Configure in `config/emissary.php`:
 
 <details class="deep-dive">
     <summary>Deep Dive</summary>
-    <div class="deep-dive-content">
 
 ### Architecture
 

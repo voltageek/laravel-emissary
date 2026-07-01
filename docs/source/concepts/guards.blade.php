@@ -47,7 +47,6 @@ First `deny` stops evaluation — the denied message goes directly to the user.
 
 <details class="deep-dive">
     <summary>Deep Dive</summary>
-    <div class="deep-dive-content">
 
 ### Built-in Guards
 

@@ -42,6 +42,24 @@ Behavioural requirements are written as **EARS** ("WHEN/IF ⟨trigger⟩ THE SYS
 1. Do not invent behaviour.
 2. State the ambiguity and the options, then stop and ask.
 
+## Principle 11 — Docs Co-Delivery
+
+Documentation is a co-deliverable of every implementation change. When you add, remove, or rename:
+
+- A config key in `config/emissary.php` → update `docs/source/reference/config.blade.php`
+- An `AgentError` constant in `src/AgentError.php` → update `docs/source/reference/api/dtos.blade.php`
+- An Artisan command in `src/Commands/` → update `docs/source/reference/commands.blade.php`
+- A contract method in `src/Contracts/` → update `docs/source/reference/api/contracts.blade.php`
+- Any class or method referenced in code examples → update the relevant guide page
+
+All code examples in docs MUST remain syntactically valid PHP 8.3+.
+
+CI enforces this automatically via `scripts/docslint.php`. Run it locally before pushing:
+
+```bash
+php scripts/docslint.php
+```
+
 ## Definition of done (per component)
 A component is complete when **all** hold:
 1. Its interface/behaviour matches `02-contracts.md` / `03-pipeline.md` verbatim (names, signatures, return types).

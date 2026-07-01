@@ -58,7 +58,6 @@ $fakeChannel = FakeChannelAdapter::forChat('telegram', [
 
 <details class="deep-dive">
     <summary>Deep Dive</summary>
-    <div class="deep-dive-content">
 
 ### AgentTestCase
 

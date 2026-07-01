@@ -60,6 +60,18 @@ List configured channels and their status.
 php artisan emissary:channels:list
 ```
 
+### emissary:channel:add
+
+Add a new channel configuration (for multi-tenant DB-backed credential stores).
+
+```bash
+php artisan emissary:channel:add whatsapp
+```
+
+| Argument | Description |
+|---|---|
+| `channel` | Channel name (telegram, whatsapp, web) |
+
 ### emissary:channel:setup
 
 Verify and configure a channel.

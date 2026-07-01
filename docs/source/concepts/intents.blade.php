@@ -53,7 +53,6 @@ public function getIntentClassificationHints(): array
 
 <details class="deep-dive">
     <summary>Deep Dive</summary>
-    <div class="deep-dive-content">
 
 ### Model Routing
 

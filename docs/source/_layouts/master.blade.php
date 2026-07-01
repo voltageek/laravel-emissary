@@ -82,7 +82,45 @@
             @endif
         </div>
 
+        @php
+ob_start();
+@endphp
         @yield('body')
+        @php
+$bodyContent = ob_get_clean();
+// Decode HTML entities that Blade files use to prevent processing
+// (e.g., &lt;?php becomes <?php). MarkdownExtra will re-encode them in
+// code blocks; this prevents double-encoding (&amp;lt;).
+$bodyContent = html_entity_decode($bodyContent, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+// Phase 1: Extract <details> blocks and render their Markdown content
+// separately. MarkdownExtra does not process Markdown inside HTML block
+// elements, so we handle <details> content independently.
+$converter = app('markdown_converter');
+$bodyContent = preg_replace_callback(
+    '#<details[^>]*>(.*?)</details>#s',
+    function ($matches) use ($converter) {
+        $inner = $matches[1];
+        // Un-indent by 4 for source indentation inside the block
+        $inner = implode("\n", array_map(function ($line) {
+            return preg_match('/^ {4}\S/', $line) ? substr($line, 4) : $line;
+        }, explode("\n", $inner)));
+        // Ensure block-level HTML at the top is recognized
+        $inner = "\n" . ltrim($inner);
+        $rendered = $converter->transform($inner);
+        return '<details class="deep-dive">' . $rendered . '</details>';
+    },
+    $bodyContent
+);
+
+// Phase 2: Render the rest of the body.
+$bodyContent = "\n" . ltrim($bodyContent);
+$bodyContent = implode("\n", array_map(function ($line) {
+    return preg_match('/^ {4}\S/', $line) ? substr($line, 4) : $line;
+}, explode("\n", $bodyContent)));
+$bodyContent = $converter->transform($bodyContent);
+@endphp
+        {!! $bodyContent !!}
 
         @include('_partials.next-link')
     </main>

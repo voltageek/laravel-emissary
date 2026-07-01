@@ -50,7 +50,6 @@ GuardResult::pending('Confirmation?');   // Require user confirmation
 
 <details class="deep-dive">
     <summary>Deep Dive</summary>
-    <div class="deep-dive-content">
 
 ### Built-in Guards
 

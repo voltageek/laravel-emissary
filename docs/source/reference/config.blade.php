@@ -92,12 +92,15 @@ This creates `config/emissary.php` in your app. All behavior is config-driven.
 <table>
 <tr><th>Key</th><th>Type</th><th>Default</th><th>Security</th></tr>
 <tr><td><code>webhook_path</code></td><td>string</td><td><code>webhooks</code></td><td>Public</td></tr>
-<tr><td><code>channels.whatsapp.access_token</code></td><td>string</td><td>—</td><td><strong>Secret</strong></td></tr>
-<tr><td><code>channels.whatsapp.phone_number_id</code></td><td>string</td><td>—</td><td>Public</td></tr>
-<tr><td><code>channels.whatsapp.app_secret</code></td><td>string</td><td>—</td><td><strong>Secret</strong></td></tr>
-<tr><td><code>channels.whatsapp.verify_token</code></td><td>string</td><td>—</td><td>Public</td></tr>
-<tr><td><code>channels.telegram.bot_token</code></td><td>string</td><td>—</td><td><strong>Secret</strong></td></tr>
-<tr><td><code>channels.telegram.secret_token</code></td><td>string</td><td>—</td><td><strong>Secret</strong></td></tr>
+ <tr><td><code>channels.whatsapp.adapter</code></td><td>class</td><td><code>WhatsAppAdapter::class</code></td><td>Internal</td></tr>
+ <tr><td><code>channels.whatsapp.access_token</code></td><td>string</td><td>—</td><td><strong>Secret</strong></td></tr>
+ <tr><td><code>channels.whatsapp.phone_number_id</code></td><td>string</td><td>—</td><td>Public</td></tr>
+ <tr><td><code>channels.whatsapp.app_secret</code></td><td>string</td><td>—</td><td><strong>Secret</strong></td></tr>
+ <tr><td><code>channels.whatsapp.verify_token</code></td><td>string</td><td>—</td><td>Public</td></tr>
+ <tr><td><code>channels.telegram.adapter</code></td><td>class</td><td><code>TelegramAdapter::class</code></td><td>Internal</td></tr>
+ <tr><td><code>channels.telegram.bot_token</code></td><td>string</td><td>—</td><td><strong>Secret</strong></td></tr>
+ <tr><td><code>channels.telegram.secret_token</code></td><td>string</td><td>—</td><td><strong>Secret</strong></td></tr>
+ <tr><td><code>channels.web.adapter</code></td><td>class</td><td><code>WebChatAdapter::class</code></td><td>Internal</td></tr>
 </table>
 
 Env overrides: `WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_APP_SECRET`, `WHATSAPP_VERIFY_TOKEN`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_SECRET_TOKEN`

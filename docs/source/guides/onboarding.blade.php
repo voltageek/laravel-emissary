@@ -35,7 +35,6 @@ When `guest_creation` is enabled, unauthenticated users get a temporary identity
 
 <details class="deep-dive">
     <summary>Deep Dive</summary>
-    <div class="deep-dive-content">
 
 ### Configuration
 

@@ -44,7 +44,6 @@ php artisan emissary:channel:test whatsapp
 
 <details class="deep-dive">
     <summary>Deep Dive</summary>
-    <div class="deep-dive-content">
 
 ### Credential Matrix
 

@@ -43,7 +43,6 @@ Turn abc-123 (2026-07-01 10:30:00)
 
 <details class="deep-dive">
     <summary>Deep Dive</summary>
-    <div class="deep-dive-content">
 
 ### Event Catalog
 

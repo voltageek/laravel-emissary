@@ -48,8 +48,13 @@ jobs:
           cp -r docs/build_latest/* docs/build/
           mv docs/build_2x docs/build/2.x
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Generate PageFind index
-        run: npx @pagefind/linux-x64 --site docs/build
+        run: npx --yes @pagefind/linux-x64 --site docs/build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

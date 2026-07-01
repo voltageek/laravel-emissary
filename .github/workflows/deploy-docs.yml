@@ -53,11 +53,10 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install PageFind
-        run: npm install -g @pagefind/linux-x64
-
       - name: Generate PageFind index
-        run: pagefind --site docs/build
+        run: |
+          npm install -g pagefind
+          pagefind --site docs/build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

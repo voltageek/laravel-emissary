@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Getting Started — Emissary Docs</title>
+    <meta name="description" content="Add agentic, multi-channel conversational AI to your Laravel application in under 10 minutes.">
+    <link rel="stylesheet" href="/laravel-emissary/assets/build/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        :root {
+            --sidebar-width: 260px;
+            --header-height: 60px;
+            --accent: #6366f1;
+            --accent-light: #e0e7ff;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --border: #e2e8f0;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --code-bg: #1e293b;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: var(--text); line-height: 1.6; display: flex; min-height: 100vh; }
+        .sidebar { width: var(--sidebar-width); position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto; border-right: 1px solid var(--border); background: var(--bg); padding: 1rem 0; z-index: 10; }
+        .sidebar .site-title { padding: 0.5rem 1.5rem 1rem; font-size: 1.25rem; font-weight: 700; color: var(--accent); border-bottom: 1px solid var(--border); margin-bottom: 0.5rem; }
+        .sidebar nav { padding: 0 0.5rem; }
+        .sidebar nav ul { list-style: none; }
+        .sidebar nav li { margin: 0; }
+        .sidebar nav a { display: block; padding: 0.35rem 1rem; color: var(--text-muted); text-decoration: none; font-size: 0.9rem; border-radius: 4px; transition: background 0.15s, color 0.15s; }
+        .sidebar nav a:hover { background: var(--accent-light); color: var(--accent); }
+        .sidebar nav a.active { background: var(--accent-light); color: var(--accent); font-weight: 600; }
+        .sidebar nav .section-title { padding: 0.75rem 1rem 0.25rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+        .sidebar nav .section-items { padding-left: 0; }
+        .content { margin-left: var(--sidebar-width); flex: 1; padding: 2rem 3rem; max-width: 900px; }
+        .breadcrumbs { margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--text-muted); }
+        .breadcrumbs a { color: var(--text-muted); text-decoration: none; }
+        .breadcrumbs a:hover { color: var(--accent); }
+        .breadcrumbs span { margin: 0 0.4rem; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        h2 { font-size: 1.5rem; margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; }
+        h3 { font-size: 1.15rem; margin: 1.5rem 0 0.5rem; }
+        h4 { font-size: 1rem; margin: 1rem 0 0.5rem; }
+        p { margin: 0.75rem 0; }
+        pre { background: var(--code-bg); border-radius: 6px; padding: 1rem; overflow-x: auto; margin: 1rem 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.875rem; }
+        :not(pre) > code { background: var(--bg-alt); padding: 0.15em 0.4em; border-radius: 3px; color: var(--accent); font-size: 0.85em; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { padding: 0.5rem 0.75rem; text-align: left; border: 1px solid var(--border); }
+        th { background: var(--bg-alt); font-weight: 600; }
+        .tldr-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; margin: 1.5rem 0; }
+        .tldr-box h4 { margin: 0 0 0.5rem; color: var(--accent); }
+        .next-link { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+        .next-link a { color: var(--accent); text-decoration: none; font-weight: 600; }
+        .callout { padding: 0.75rem 1rem; border-radius: 6px; margin: 1rem 0; }
+        .callout-warning { background: #fef3c7; border: 1px solid #f59e0b; color: #92400e; }
+        .callout-info { background: #dbeafe; border: 1px solid #3b82f6; color: #1e40af; }
+        .version-switcher { padding: 0.5rem 1rem; border-bottom: 1px solid var(--border); margin-bottom: 0.5rem; }
+        .version-switcher select { width: 100%; padding: 0.4rem 0.5rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.85rem; background: var(--bg); color: var(--text); }
+        .page-header { margin-bottom: 2rem; }
+        .page-header p { color: var(--text-muted); font-size: 1.05rem; }
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .content { margin-left: 0; padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+    <div class="site-title">
+        <a href="/laravel-emissary/" style="color: inherit; text-decoration: none;">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E" alt="" style="vertical-align: middle; margin-right: 0.4rem; margin-bottom: 2px;">
+            Emissary Docs
+        </a>
+    </div>
+
+    <div class="version-switcher">
+    <select id="version-select" onchange="switchVersion(this.value)">
+        <option value="/" selected>latest</option>
+        <option value="/2.x/">2.x</option>
+    </select>
+</div>
+
+<script>
+function switchVersion(versionPath) {
+    var currentPath = window.location.pathname;
+    var trimmed = versionPath.replace(/^\/|\/$/g, '');
+    var newPath = trimmed ? '/' + trimmed + '/' : '/';
+    window.location.href = newPath;
+}
+</script>
+
+    <div id="pagefind-search"></div>
+
+    <nav>
+        
+                    <div class="section-title">Getting Started</div>
+            <ul class="section-items">
+                                    <li>
+                                                <a href="/laravel-emissary/" class=" active ">Getting Started</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                            </ul>
+                    <div class="section-title">Core Concepts</div>
+            <ul class="section-items">
+                                    <li>
+                                                <a href="/laravel-emissary/concepts" class="">Overview</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/concepts/intents" class="">Intents</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/concepts/tools" class="">Tools</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/concepts/guards" class="">Guards</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/concepts/pipeline" class="">Pipeline</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                            </ul>
+                    <div class="section-title">Guides</div>
+            <ul class="section-items">
+                                    <li>
+                                                <a href="/laravel-emissary/guides/tool-authoring" class="">Tool Authoring</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/guides/guard-authoring" class="">Guard Authoring</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/guides/onboarding" class="">Onboarding &amp; Consent</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/guides/channels" class="">Channels</a>
+                                                    <ul class="section-items">
+                                                                    <li>
+                                                                                <a href="/laravel-emissary/guides/channels/telegram" class="" style="padding-left: 2rem;">Telegram</a>
+                                    </li>
+                                                                    <li>
+                                                                                <a href="/laravel-emissary/guides/channels/whatsapp" class="" style="padding-left: 2rem;">WhatsApp</a>
+                                    </li>
+                                                                    <li>
+                                                                                <a href="/laravel-emissary/guides/channels/web" class="" style="padding-left: 2rem;">Web Widget</a>
+                                    </li>
+                                                            </ul>
+                                            </li>
+                            </ul>
+                    <div class="section-title">Reference</div>
+            <ul class="section-items">
+                                    <li>
+                                                <a href="/laravel-emissary/reference/config" class="">Configuration</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/reference/api" class="">API</a>
+                                                    <ul class="section-items">
+                                                                    <li>
+                                                                                <a href="/laravel-emissary/reference/api/contracts" class="" style="padding-left: 2rem;">Contracts</a>
+                                    </li>
+                                                                    <li>
+                                                                                <a href="/laravel-emissary/reference/api/dtos" class="" style="padding-left: 2rem;">DTOs</a>
+                                    </li>
+                                                                    <li>
+                                                                                <a href="/laravel-emissary/reference/api/attributes" class="" style="padding-left: 2rem;">Attributes</a>
+                                    </li>
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/reference/commands" class="">Artisan Commands</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                            </ul>
+                    <div class="section-title">Operations</div>
+            <ul class="section-items">
+                                    <li>
+                                                <a href="/laravel-emissary/operations/observability" class="">Observability &amp; Debugging</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/operations/testing" class="">Testing</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/operations/migration" class="">Migration</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                            </ul>
+            </nav>
+</aside>
+
+    <main class="content">
+        <nav class="breadcrumbs">
+    
+    <a href="/laravel-emissary/">Home</a>
+
+    </nav>
+
+        <div class="page-header">
+            <h1>Getting Started</h1>
+                            <p>Add agentic, multi-channel conversational AI to your Laravel application in under 10 minutes.</p>
+                    </div>
+
+                <div class="tldr-box">
+<h4>TL;DR</h4>
+<pre><code class="language-bash">composer require voltageek/laravel-emissary
+php artisan vendor:publish --tag=emissary-config --tag=emissary-migrations
+php artisan migrate
+# Set OPENROUTER_API_KEY in .env
+# Add <x-emissary-web /> to any Blade view
+php artisan serve</code></pre>
+</div>
+
+<h2>Quick Start</h2>
+
+<p>Emissary adds conversational AI to any Laravel app. You define <strong>intents</strong> (what users ask), <strong>tools</strong> (what the agent can do), and <strong>guards</strong> (safety rules). The library handles routing, LLM calls, memory, and multi-channel delivery.</p>
+
+<h3>1. Install</h3>
+
+<pre><code class="language-bash">composer require voltageek/laravel-emissary
+</code></pre>
+
+<p>The service provider (<code>Emissary\EmissaryServiceProvider</code>) is auto-discovered by Laravel.</p>
+
+<h3>2. Publish Configuration &amp; Migrations</h3>
+
+<pre><code class="language-bash">php artisan vendor:publish --tag=emissary-config --tag=emissary-migrations
+php artisan migrate
+</code></pre>
+
+<p>This publishes <code>config/emissary.php</code> (254 lines of config-driven behaviour) and the conversation, event, and tool-invocation tables.</p>
+
+<h3>3. Set Your OpenRouter API Key</h3>
+
+<p>Add to <code>.env</code>:</p>
+
+<pre><code class="language-bash">OPENROUTER_API_KEY=sk-or-v1-your-key-here
+</code></pre>
+
+<div class="callout callout-info">
+<strong>No API key?</strong> Sign up at <a href="https://openrouter.ai">openrouter.ai</a> for a free tier. Emissary supports any OpenAI-compatible endpoint — configure <code>openrouter.base_url</code> and <code>openrouter.api_key</code> in <code>config/emissary.php</code> if using a different provider.
+</div>
+
+<h3>4. Add the Web Widget</h3>
+
+<p>Drop the Blade component into any view:</p>
+
+<pre><code class="language-blade">&lt;x-emissary-web /&gt;
+</code></pre>
+
+<p>That's it. No additional configuration — the widget connects to the default chat endpoint.</p>
+
+<h3>5. Test It</h3>
+
+<pre><code class="language-bash">php artisan serve
+</code></pre>
+
+<p>Visit your app, open the chat widget, and say "hello". The agent responds.</p>
+
+<h2>What Just Happened?</h2>
+
+<ol>
+<li>The web widget sent your message through Emissary's pipeline</li>
+<li>A guard checkpoint verified the request (security controls default <strong>on</strong>)</li>
+<li>The intent router classified your message via <code>OPENROUTER_API_KEY</code></li>
+<li>The agent responded through the web channel</li>
+</ol>
+
+<h2>Where to Go Next</h2>
+
+<ul>
+<li><strong><a href="/concepts">Core Concepts →</a></strong> — Understand intents, tools, and guards</li>
+<li><strong><a href="/guides/tool-authoring">Tool Authoring →</a></strong> — Add your first <code>#[Tool]</code></li>
+<li><strong><a href="/guides/channels/telegram">Channel Setup →</a></strong> — Connect Telegram or WhatsApp</li>
+</ul>
+
+<h2>Troubleshooting</h2>
+
+<div class="callout callout-warning">
+<strong>"No OPENROUTER_API_KEY set"</strong><br>
+Verify your <code>.env</code> has <code>OPENROUTER_API_KEY</code>. See the <a href="/reference/config">Configuration Reference</a> for all env vars.
+</div>
+
+<div class="callout callout-warning">
+<strong>"Route not found" or widget doesn't appear</strong><br>
+Emissary registers routes under <code>/emissary/</code>. If you have conflicting routes, customize the prefix in <code>config/emissary.php</code> → <code>routing.prefix</code>. See the <a href="/reference/config">Configuration Reference</a>.
+</div>
+
+
+        <div class="next-link">
+    <a href="https://github.com/voltageek/laravel-emissary">View the source on GitHub →</a>
+</div>
+    </main>
+
+    <script src="/pagefind/pagefind-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'neutral' });</script>
+    </body>
+</html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>API — DTOs — Emissary Docs</title>
+    <meta name="description" content="Emissary data transfer objects — InboundMessage, AgentResponse, GuardResult, and more.">
+    <link rel="stylesheet" href="/laravel-emissary/2.x/assets/build/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        :root {
+            --sidebar-width: 260px;
+            --header-height: 60px;
+            --accent: #6366f1;
+            --accent-light: #e0e7ff;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --border: #e2e8f0;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --code-bg: #1e293b;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: var(--text); line-height: 1.6; display: flex; min-height: 100vh; }
+        .sidebar { width: var(--sidebar-width); position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto; border-right: 1px solid var(--border); background: var(--bg); padding: 1rem 0; z-index: 10; }
+        .sidebar .site-title { padding: 0.5rem 1.5rem 1rem; font-size: 1.25rem; font-weight: 700; color: var(--accent); border-bottom: 1px solid var(--border); margin-bottom: 0.5rem; }
+        .sidebar nav { padding: 0 0.5rem; }
+        .sidebar nav ul { list-style: none; }
+        .sidebar nav li { margin: 0; }
+        .sidebar nav a { display: block; padding: 0.35rem 1rem; color: var(--text-muted); text-decoration: none; font-size: 0.9rem; border-radius: 4px; transition: background 0.15s, color 0.15s; }
+        .sidebar nav a:hover { background: var(--accent-light); color: var(--accent); }
+        .sidebar nav a.active { background: var(--accent-light); color: var(--accent); font-weight: 600; }
+        .sidebar nav .section-title { padding: 0.75rem 1rem 0.25rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+        .sidebar nav .section-items { padding-left: 0; }
+        .content { margin-left: var(--sidebar-width); flex: 1; padding: 2rem 3rem; max-width: 900px; }
+        .breadcrumbs { margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--text-muted); }
+        .breadcrumbs a { color: var(--text-muted); text-decoration: none; }
+        .breadcrumbs a:hover { color: var(--accent); }
+        .breadcrumbs span { margin: 0 0.4rem; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        h2 { font-size: 1.5rem; margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; }
+        h3 { font-size: 1.15rem; margin: 1.5rem 0 0.5rem; }
+        h4 { font-size: 1rem; margin: 1rem 0 0.5rem; }
+        p { margin: 0.75rem 0; }
+        pre { background: var(--code-bg); border-radius: 6px; padding: 1rem; overflow-x: auto; margin: 1rem 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.875rem; }
+        :not(pre) > code { background: var(--bg-alt); padding: 0.15em 0.4em; border-radius: 3px; color: var(--accent); font-size: 0.85em; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { padding: 0.5rem 0.75rem; text-align: left; border: 1px solid var(--border); }
+        th { background: var(--bg-alt); font-weight: 600; }
+        .tldr-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; margin: 1.5rem 0; }
+        .tldr-box h4 { margin: 0 0 0.5rem; color: var(--accent); }
+        .next-link { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+        .next-link a { color: var(--accent); text-decoration: none; font-weight: 600; }
+        .callout { padding: 0.75rem 1rem; border-radius: 6px; margin: 1rem 0; }
+        .callout-warning { background: #fef3c7; border: 1px solid #f59e0b; color: #92400e; }
+        .callout-info { background: #dbeafe; border: 1px solid #3b82f6; color: #1e40af; }
+        .version-switcher { padding: 0.5rem 1rem; border-bottom: 1px solid var(--border); margin-bottom: 0.5rem; }
+        .version-switcher select { width: 100%; padding: 0.4rem 0.5rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.85rem; background: var(--bg); color: var(--text); }
+        .page-header { margin-bottom: 2rem; }
+        .page-header p { color: var(--text-muted); font-size: 1.05rem; }
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .content { margin-left: 0; padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+    <div class="site-title">
+        <a href="/laravel-emissary/2.x/" style="color: inherit; text-decoration: none;">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E" alt="" style="vertical-align: middle; margin-right: 0.4rem; margin-bottom: 2px;">
+            Emissary Docs
+        </a>
+    </div>
+
+    <div class="version-switcher">
+    <select id="version-select" onchange="switchVersion(this.value)">
+        <option value="/" selected>latest</option>
+        <option value="/2.x/">2.x</option>
+    </select>
+</div>
+
+<script>
+function switchVersion(versionPath) {
+    var currentPath = window.location.pathname;
+    var trimmed = versionPath.replace(/^\/|\/$/g, '');
+    var newPath = trimmed ? '/' + trimmed + '/' : '/';
+    window.location.href = newPath;
+}
+</script>
+
+    <div id="pagefind-search"></div>
+
+    <nav>
+        
+                    <div class="section-title">Getting Started</div>
+            <ul class="section-items">
+                                    <li>
+                                                <a href="/laravel-emissary/2.x/" class="">Getting Started</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                            </ul>
+                    <div class="section-title">Core Concepts</div>
+            <ul class="section-items">
+                                    <li>
+                                                <a href="/laravel-emissary/2.x/concepts" class="">Overview</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/2.x/concepts/intents" class="">Intents</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/2.x/concepts/tools" class="">Tools</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/2.x/concepts/guards" class="">Guards</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/2.x/concepts/pipeline" class="">Pipeline</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                            </ul>
+                    <div class="section-title">Guides</div>
+            <ul class="section-items">
+                                    <li>
+                                                <a href="/laravel-emissary/2.x/guides/tool-authoring" class="">Tool Authoring</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/2.x/guides/guard-authoring" class="">Guard Authoring</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/2.x/guides/onboarding" class="">Onboarding &amp; Consent</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/2.x/guides/channels" class="">Channels</a>
+                                                    <ul class="section-items">
+                                                                    <li>
+                                                                                <a href="/laravel-emissary/2.x/guides/channels/telegram" class="" style="padding-left: 2rem;">Telegram</a>
+                                    </li>
+                                                                    <li>
+                                                                                <a href="/laravel-emissary/2.x/guides/channels/whatsapp" class="" style="padding-left: 2rem;">WhatsApp</a>
+                                    </li>
+                                                                    <li>
+                                                                                <a href="/laravel-emissary/2.x/guides/channels/web" class="" style="padding-left: 2rem;">Web Widget</a>
+                                    </li>
+                                                            </ul>
+                                            </li>
+                            </ul>
+                    <div class="section-title">Reference</div>
+            <ul class="section-items">
+                                    <li>
+                                                <a href="/laravel-emissary/2.x/reference/config" class="">Configuration</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/2.x/reference/api" class="">API</a>
+                                                    <ul class="section-items">
+                                                                    <li>
+                                                                                <a href="/laravel-emissary/2.x/reference/api/contracts" class="" style="padding-left: 2rem;">Contracts</a>
+                                    </li>
+                                                                    <li>
+                                                                                <a href="/laravel-emissary/2.x/reference/api/dtos" class="" style="padding-left: 2rem;">DTOs</a>
+                                    </li>
+                                                                    <li>
+                                                                                <a href="/laravel-emissary/2.x/reference/api/attributes" class="" style="padding-left: 2rem;">Attributes</a>
+                                    </li>
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/2.x/reference/commands" class="">Artisan Commands</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                            </ul>
+                    <div class="section-title">Operations</div>
+            <ul class="section-items">
+                                    <li>
+                                                <a href="/laravel-emissary/2.x/operations/observability" class="">Observability &amp; Debugging</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/2.x/operations/testing" class="">Testing</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                                    <li>
+                                                <a href="/laravel-emissary/2.x/operations/migration" class="">Migration</a>
+                                                    <ul class="section-items">
+                                                            </ul>
+                                            </li>
+                            </ul>
+            </nav>
+</aside>
+
+    <main class="content">
+        <nav class="breadcrumbs">
+    
+    <a href="/laravel-emissary/2.x/">Home</a>
+
+                    <span>&gt;</span>
+                    <a href="/laravel-emissary/2.x/reference">Reference</a>
+                            <span>&gt;</span>
+                    <a href="/laravel-emissary/2.x/reference/api">Api</a>
+                            <span>&gt;</span>
+                    <span>API — DTOs</span>
+            </nav>
+
+        <div class="page-header">
+            <h1>API — DTOs</h1>
+                            <p>Emissary data transfer objects — InboundMessage, AgentResponse, GuardResult, and more.</p>
+                    </div>
+
+                <div class="tldr-box">
+<h4>TL;DR</h4>
+<p>Emissary uses readonly DTOs for all data transfer between pipeline stages. DTOs carry <code>turn_id</code> for traceability.</p>
+</div>
+
+<h2>Quick Start</h2>
+
+<p>Every DTO in Emissary is a <code>readonly class</code> with constructor property promotion:</p>
+
+<pre><code class="language-php">readonly class GuardResult
+{
+public function __construct(
+        public bool $allowed,
+        public ?string $reason = null,
+        public bool $pending = false,
+) {}
+}
+</code></pre>
+
+<h2>DTOs</h2>
+
+<h3>InboundMessage</h3>
+
+<p>Carries a message from a channel into the pipeline.</p>
+
+<table>
+<thead>
+<tr>
+  <th>Property</th>
+  <th>Type</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>conversationId</code></td>
+  <td><code>string</code></td>
+  <td>Unique conversation identifier</td>
+</tr>
+<tr>
+  <td><code>channel</code></td>
+  <td><code>Channel</code></td>
+  <td>Source channel (whatsapp, telegram, web)</td>
+</tr>
+<tr>
+  <td><code>content</code></td>
+  <td><code>string</code></td>
+  <td>Message body text</td>
+</tr>
+<tr>
+  <td><code>senderId</code></td>
+  <td><code>string</code></td>
+  <td>Channel-specific sender identifier</td>
+</tr>
+<tr>
+  <td><code>metadata</code></td>
+  <td><code>array</code></td>
+  <td>Channel-specific metadata</td>
+</tr>
+<tr>
+  <td><code>turnId</code></td>
+  <td><code>string</code></td>
+  <td>Unique identifier for this turn</td>
+</tr>
+</tbody>
+</table>
+
+<h3>AgentResponse</h3>
+
+<p>Carries the agent's response back through the pipeline.</p>
+
+<table>
+<thead>
+<tr>
+  <th>Property</th>
+  <th>Type</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>content</code></td>
+  <td><code>string</code></td>
+  <td>Response text</td>
+</tr>
+<tr>
+  <td><code>toolCalls</code></td>
+  <td><code>array</code></td>
+  <td>Tool invocations made</td>
+</tr>
+<tr>
+  <td><code>turnId</code></td>
+  <td><code>string</code></td>
+  <td>Turn identifier</td>
+</tr>
+<tr>
+  <td><code>cost</code></td>
+  <td><code>float</code></td>
+  <td>Total cost in USD</td>
+</tr>
+</tbody>
+</table>
+
+<h3>IntentResult</h3>
+
+<p>Output of intent classification.</p>
+
+<table>
+<thead>
+<tr>
+  <th>Property</th>
+  <th>Type</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>intent</code></td>
+  <td><code>string</code></td>
+  <td>Classified intent slug</td>
+</tr>
+<tr>
+  <td><code>confidence</code></td>
+  <td><code>float</code></td>
+  <td>Classification confidence (0–1)</td>
+</tr>
+<tr>
+  <td><code>turnId</code></td>
+  <td><code>string</code></td>
+  <td>Turn identifier</td>
+</tr>
+</tbody>
+</table>
+
+<h3>GuardResult</h3>
+
+<p>Guard evaluation outcome. Built with named constructors:</p>
+
+<pre><code class="language-php">GuardResult::allow();                      // Proceed
+GuardResult::deny('Rate limit exceeded');  // Block
+GuardResult::pending('Confirm refund?');   // Need confirmation
+</code></pre>
+
+<h3>ChannelCredentials</h3>
+
+<p>Channel authentication data.</p>
+
+<table>
+<thead>
+<tr>
+  <th>Property</th>
+  <th>Type</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>channel</code></td>
+  <td><code>Channel</code></td>
+  <td>Channel identifier</td>
+</tr>
+<tr>
+  <td><code>credentials</code></td>
+  <td><code>array</code></td>
+  <td>Key-value credential map</td>
+</tr>
+</tbody>
+</table>
+
+<h3>OutboundMessage</h3>
+
+<p>Carries a formatted response to a channel adapter.</p>
+
+<table>
+<thead>
+<tr>
+  <th>Property</th>
+  <th>Type</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>recipientId</code></td>
+  <td><code>string</code></td>
+  <td>Channel recipient identifier</td>
+</tr>
+<tr>
+  <td><code>content</code></td>
+  <td><code>string</code></td>
+  <td>Formatted message content</td>
+</tr>
+<tr>
+  <td><code>channel</code></td>
+  <td><code>Channel</code></td>
+  <td>Target channel</td>
+</tr>
+<tr>
+  <td><code>turnId</code></td>
+  <td><code>string</code></td>
+  <td>Turn identifier</td>
+</tr>
+</tbody>
+</table>
+
+<h2>See Also</h2>
+
+<ul>
+<li><a href="/reference/api/contracts">Contracts →</a></li>
+<li><a href="/reference/api/attributes">Attributes →</a></li>
+<li><a href="/reference/api/inheritance">Inheritance Diagram →</a></li>
+</ul>
+
+
+        <div class="next-link">
+    <a href="https://github.com/voltageek/laravel-emissary">View the source on GitHub →</a>
+</div>
+    </main>
+
+    <script src="/pagefind/pagefind-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'neutral' });</script>
+    </body>
+</html>

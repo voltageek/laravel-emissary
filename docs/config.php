@@ -1,13 +1,13 @@
 <?php
 
 return [
-    'baseUrl' => '',
+    'baseUrl' => getenv('JIGSAW_BASE_URL') ?: '',
     'production' => false,
     'siteName' => 'Emissary Docs',
     'siteDescription' => 'Agentic, multi-channel conversational AI for Laravel applications',
     'build' => [
         'source' => 'source',
-        'destination' => 'build',
+        'destination' => getenv('JIGSAW_DEST') ?: 'build',
     ],
     'collections' => [],
 

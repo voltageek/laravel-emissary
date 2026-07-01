@@ -1,0 +1,6 @@
+{
+    "versions": [
+        {"label": "latest", "path": "/", "default": true},
+        {"label": "2.x", "path": "/2.x/"}
+    ]
+}

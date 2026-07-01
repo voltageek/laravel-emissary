@@ -11,3 +11,6 @@ Thumbs.db
 .vscode/
 .idea/
 tests/Fixtures/Agent/*.json
+docs/build/
+docs/composer.lock
+docs/vendor/

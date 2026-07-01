@@ -1,0 +1,27 @@
+/* Sidebar styling handled inline in master.blade.php layout */
+
+/* Code block enhancements */
+pre code.hljs { background: var(--code-bg); padding: 0; }
+.hljs { background: var(--code-bg); }
+
+/* Collapsible deep-dive sections */
+details.deep-dive { margin: 1.5rem 0; border: 1px solid var(--border); border-radius: 6px; }
+details.deep-dive > summary { padding: 0.75rem 1rem; font-weight: 600; cursor: pointer; background: var(--bg-alt); border-radius: 6px; user-select: none; }
+details.deep-dive[open] > summary { border-radius: 6px 6px 0 0; border-bottom: 1px solid var(--border); }
+details.deep-dive .deep-dive-content { padding: 1rem; }
+
+/* Search UI */
+#pagefind-search { margin-bottom: 1rem; }
+#pagefind-search input { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.9rem; }
+#pagefind-search input::placeholder { color: var(--text-muted); }
+.pagefind-ui__result-title { font-weight: 600; }
+.pagefind-ui__result-excerpt { font-size: 0.85rem; color: var(--text-muted); }
+
+/* Responsive table */
+table { display: block; overflow-x: auto; }
+
+/* Print */
+@media print {
+    .sidebar { display: none; }
+    .content { margin-left: 0; }
+}

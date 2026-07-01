@@ -1,0 +1,51 @@
+name: Deploy Docs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - '.github/workflows/deploy-docs.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, xml
+
+      - name: Install root dependencies
+        run: composer install --no-dev --no-interaction --prefer-dist
+
+      - name: Install docs dependencies
+        working-directory: docs
+        run: composer install --no-dev --no-interaction --prefer-dist
+
+      - name: Build docs (latest)
+        working-directory: docs
+        run: php vendor/bin/jigsaw build production
+
+      - name: Build docs (2.x)
+        working-directory: docs
+        run: php vendor/bin/jigsaw build production
+        env:
+          JIGSAW_BUILD_PATH: build/2.x
+
+      - name: Generate PageFind index
+        run: npx @pagefind/linux-x64 --site docs/build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/build
+          publish_branch: gh-pages

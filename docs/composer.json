@@ -1,0 +1,19 @@
+{
+    "name": "voltageek/laravel-emissary-docs",
+    "description": "Documentation site for Emissary — agentic, multi-channel conversational AI for Laravel",
+    "type": "project",
+    "require": {
+        "php": "^8.3",
+        "tightenco/jigsaw": "^1.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Emissary\\": "../src/"
+        }
+    },
+    "scripts": {
+        "build": "vendor/bin/jigsaw build",
+        "build:production": "vendor/bin/jigsaw build production",
+        "serve": "vendor/bin/jigsaw serve"
+    }
+}

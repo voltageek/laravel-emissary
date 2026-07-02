@@ -437,6 +437,102 @@ GuardResult::pending('Confirm refund?');   // Need confirmation
 </tbody>
 </table>
 
+<h2>Error Codes</h2>
+
+<p>Emissary uses <code>AgentError</code> constants for all failure modes.</p>
+
+<table>
+<thead>
+<tr>
+  <th>Constant</th>
+  <th>Value</th>
+  <th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>GUARD_DENIED</code></td>
+  <td><code>guard.denied</code></td>
+  <td>A guard blocked the request</td>
+</tr>
+<tr>
+  <td><code>AUTH_UNAUTHENTICATED</code></td>
+  <td><code>auth.unauthenticated</code></td>
+  <td>No authenticated user</td>
+</tr>
+<tr>
+  <td><code>AUTH_UNAUTHORIZED</code></td>
+  <td><code>auth.unauthorized</code></td>
+  <td>User lacks permission</td>
+</tr>
+<tr>
+  <td><code>INTENT_LOW_CONFIDENCE</code></td>
+  <td><code>intent.low_confidence</code></td>
+  <td>Intent confidence below threshold</td>
+</tr>
+<tr>
+  <td><code>INTENT_UNKNOWN</code></td>
+  <td><code>intent.unknown</code></td>
+  <td>No matching intent</td>
+</tr>
+<tr>
+  <td><code>TOOL_EXECUTION_FAILED</code></td>
+  <td><code>tool.execution_failed</code></td>
+  <td>Tool threw an exception</td>
+</tr>
+<tr>
+  <td><code>TOOL_INVALID_ARGUMENTS</code></td>
+  <td><code>tool.invalid_arguments</code></td>
+  <td>Arguments failed validation</td>
+</tr>
+<tr>
+  <td><code>TOOL_MAX_ROUNDS</code></td>
+  <td><code>agent.max_rounds</code></td>
+  <td>Tool loop limit reached</td>
+</tr>
+<tr>
+  <td><code>LLM_TIMEOUT</code></td>
+  <td><code>llm.timeout</code></td>
+  <td>LLM call timed out</td>
+</tr>
+<tr>
+  <td><code>LLM_RATE_LIMITED</code></td>
+  <td><code>llm.rate_limited</code></td>
+  <td>LLM rate limited</td>
+</tr>
+<tr>
+  <td><code>LLM_ERROR</code></td>
+  <td><code>llm.error</code></td>
+  <td>LLM generic error</td>
+</tr>
+<tr>
+  <td><code>SECURITY_JAILBREAK</code></td>
+  <td><code>security.jailbreak</code></td>
+  <td>Prompt injection blocked</td>
+</tr>
+<tr>
+  <td><code>COST_LIMIT_EXCEEDED</code></td>
+  <td><code>cost.limit_exceeded</code></td>
+  <td>Conversation cost cap reached</td>
+</tr>
+<tr>
+  <td><code>ONBOARDING_REQUIRED</code></td>
+  <td><code>onboarding.required</code></td>
+  <td>Onboarding not complete</td>
+</tr>
+<tr>
+  <td><code>CONVERSATION_MAX_TURNS</code></td>
+  <td><code>conversation.max_turns</code></td>
+  <td>Conversation turn limit reached</td>
+</tr>
+<tr>
+  <td><code>CHANNEL_DELIVERY_FAILED</code></td>
+  <td><code>channel.delivery_failed</code></td>
+  <td>Channel adapter failed to deliver</td>
+</tr>
+</tbody>
+</table>
+
 <h2>See Also</h2>
 
 <ul>

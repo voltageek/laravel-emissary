@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>WhatsApp — Emissary Docs</title>
-    <meta name="description" content="Connect Emissary to the WhatsApp Business API.">
+    <meta name="description" content="Connect Emissary to WhatsApp via WAHA (default) or Meta Business API.">
     <link rel="stylesheet" href="/laravel-emissary/2.x/assets/build/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
     <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
@@ -229,56 +229,198 @@ function switchVersion(versionPath) {
 
         <div class="page-header">
             <h1>WhatsApp</h1>
-                            <p>Connect Emissary to the WhatsApp Business API.</p>
+                            <p>Connect Emissary to WhatsApp via WAHA (default) or Meta Business API.</p>
                     </div>
 
                 <div class="tldr-box">
-<h4>TL;DR</h4>
-<pre><code class="language-bash"># 1. Set up Meta Business app → get phone number ID + access token
-# 2. Set env vars:
-WHATSAPP_PHONE_NUMBER_ID=123456789
-WHATSAPP_ACCESS_TOKEN=EAAx...
-WHATSAPP_WEBHOOK_VERIFY_TOKEN=your-verify-token
+<h4>TL;DR — WAHA (Default)</h4>
+<pre><code class="language-bash"># 1. Start WAHA Docker container
+docker run -d --name waha -p 3000:3000 devlikeapro/waha
 
-# 3. Configure webhook in Meta dashboard → your-app.com/emissary/webhook/whatsapp
+# 2. Set env vars:
+WAHA_API_URL=http://localhost:3000
+WAHA_API_KEY=your-secret-key
+
+# 3. Start session (creates + starts + configures webhook)
+php artisan emissary:waha:session:start
+# → Scan QR code with WhatsApp mobile app
+
 # 4. Verify
 php artisan emissary:channel:test whatsapp</code></pre>
 </div>
 
-<h2>Quick Start</h2>
+<h2>Quick Start — WAHA (Default)</h2>
 
-<h3>1. Meta Business Setup</h3>
+<p>Emissary uses <a href="https://github.com/devlikeapro/waha">WAHA</a> (WhatsApp HTTP API) as the default WhatsApp backend. WAHA is self-hostable and connects via WhatsApp Web — no Meta Business account required.</p>
 
-<ol>
-<li>Go to <a href="https://developers.facebook.com/">Meta for Developers</a></li>
-<li>Create a Business app with the WhatsApp product</li>
-<li>Get your <strong>Phone Number ID</strong> and a <strong>Permanent Access Token</strong></li>
-<li>Set up a <strong>Webhook</strong> pointing to <code>https://your-app.com/emissary/webhook/whatsapp</code></li>
-</ol>
+<h3>1. Start WAHA</h3>
+
+<pre><code class="language-bash">docker run -d --name waha -p 3000:3000 devlikeapro/waha
+</code></pre>
 
 <h3>2. Configure Environment</h3>
 
-<pre><code class="language-bash">WHATSAPP_PHONE_NUMBER_ID=123456789
-WHATSAPP_ACCESS_TOKEN=EAAx...
-WHATSAPP_WEBHOOK_VERIFY_TOKEN=your-verify-token
+<pre><code class="language-bash">WAHA_API_URL=http://localhost:3000
+WAHA_API_KEY=your-secret-key
 </code></pre>
 
-<h3>3. Verify</h3>
+<h3>3. Start Session &amp; Scan QR Code</h3>
 
-<pre><code class="language-bash">php artisan emissary:channel:setup whatsapp
-php artisan emissary:channel:test whatsapp
+<pre><code class="language-bash">php artisan emissary:waha:session:start
 </code></pre>
 
-<details class="deep-dive"><summary>Deep Dive</summary>
+<p>The command creates the session, configures the webhook URL automatically, and displays a QR code. Scan it with your WhatsApp mobile app to connect.</p>
 
-<h3>Credential Matrix</h3>
+<h3>4. Verify</h3>
+
+<pre><code class="language-bash">php artisan emissary:channel:test whatsapp
+</code></pre>
+
+<details class="deep-dive"><summary>Deep Dive — WAHA</summary>
+
+<h3>WAHA Credential Matrix</h3>
 
 <table>
 <thead>
 <tr>
   <th>Env Variable</th>
   <th>Config Key</th>
-  <th>Required</th>
+  <th>Default</th>
+  <th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>WAHA_API_URL</code></td>
+  <td><code>channels.whatsapp.waha_api_url</code></td>
+  <td><code>http://localhost:3000</code></td>
+  <td>WAHA instance URL</td>
+</tr>
+<tr>
+  <td><code>WAHA_API_KEY</code></td>
+  <td><code>channels.whatsapp.waha_api_key</code></td>
+  <td>—</td>
+  <td>API key for WAHA authentication</td>
+</tr>
+<tr>
+  <td><code>WAHA_SESSION</code></td>
+  <td><code>channels.whatsapp.waha_session</code></td>
+  <td><code>default</code></td>
+  <td>Session name (must be <code>default</code> for WAHA free)</td>
+</tr>
+<tr>
+  <td><code>WAHA_HMAC_KEY</code></td>
+  <td><code>channels.whatsapp.waha_hmac_key</code></td>
+  <td>—</td>
+  <td>Optional: HMAC-SHA512 key for webhook verification</td>
+</tr>
+<tr>
+  <td><code>WAHA_VERSION</code></td>
+  <td><code>channels.whatsapp.waha_version</code></td>
+  <td><code>free</code></td>
+  <td><code>free</code> (single session) or <code>plus</code> (multi-session)</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Session Management Commands</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Command</th>
+  <th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>emissary:waha:session:start</code></td>
+  <td>Create, start, and watch a session</td>
+</tr>
+<tr>
+  <td><code>emissary:waha:session:status</code></td>
+  <td>Print session state</td>
+</tr>
+<tr>
+  <td><code>emissary:waha:session:stop</code></td>
+  <td>Stop a running session</td>
+</tr>
+<tr>
+  <td><code>emissary:waha:session:restart</code></td>
+  <td>Restart a session</td>
+</tr>
+<tr>
+  <td><code>emissary:waha:session:qr</code></td>
+  <td>Show QR code for scanning</td>
+</tr>
+<tr>
+  <td><code>emissary:waha:session:list</code></td>
+  <td>List all sessions</td>
+</tr>
+<tr>
+  <td><code>emissary:waha:session:delete</code></td>
+  <td>Delete a session</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Webhook Verification</h3>
+
+<p>WAHA sends POST webhooks with optional HMAC-SHA512 authentication via the <code>X-Webhook-Hmac</code> and <code>X-Webhook-Hmac-Algorithm</code> headers. When <code>WAHA_HMAC_KEY</code> is configured, Emissary validates the signature. When unset, verification is skipped (dev/trusted-network mode).</p>
+
+<h3>Inbound Messages</h3>
+
+<p>Emissary handles WAHA text and media messages. The adapter parses the webhook payload (<code>payload.from</code>, <code>payload.body</code>, <code>payload.media</code>), filters out <code>fromMe</code> echoes, resolves the sender identity, and enters the pipeline.</p>
+
+<h3>WAHA Free vs Plus</h3>
+
+<ul>
+<li><strong>Free</strong>: Single session (<code>default</code> only). The <code>session:start</code> command warns and forces <code>default</code> if you try another name.</li>
+<li><strong>Plus</strong>: Multi-session support. Use <code>emissary:channel:add whatsapp --waha-session=my-session</code> for per-tenant sessions.</li>
+</ul>
+
+<p></div></p>
+</details>
+
+<hr>
+
+<h2>Meta Business API (Legacy)</h2>
+
+<p>Existing Meta WhatsApp Business API users can stay on the Meta backend by setting <code>backend = 'meta'</code> in config.</p>
+
+<div class="tldr-box">
+<h4>TL;DR — Meta (Legacy)</h4>
+<pre><code class="language-bash"># Set env vars:
+WHATSAPP_PHONE_NUMBER_ID=123456789
+WHATSAPP_ACCESS_TOKEN=EAAx...
+WHATSAPP_WEBHOOK_VERIFY_TOKEN=your-verify-token
+
+# Configure webhook in Meta dashboard
+
+# Verify
+php artisan emissary:channel:test whatsapp</code></pre>
+</div>
+
+<h3>Switching to Meta Backend</h3>
+
+<p>Set <code>backend</code> to <code>meta</code> and update the adapter in <code>config/emissary.php</code>:</p>
+
+<pre><code class="language-php">'channels' =&gt; [
+'whatsapp' =&gt; [
+        'backend'  =&gt; 'meta',
+        'adapter'  =&gt; \Emissary\Channels\MetaWhatsAppAdapter::class,
+        // ... Meta credentials
+],
+],
+</code></pre>
+
+<h3>Meta Credential Matrix</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Env Variable</th>
+  <th>Config Key</th>
   <th>Purpose</th>
 </tr>
 </thead>
@@ -286,34 +428,29 @@ php artisan emissary:channel:test whatsapp
 <tr>
   <td><code>WHATSAPP_PHONE_NUMBER_ID</code></td>
   <td><code>channels.whatsapp.phone_number_id</code></td>
-  <td>Yes</td>
   <td>Meta phone number identifier</td>
 </tr>
 <tr>
   <td><code>WHATSAPP_ACCESS_TOKEN</code></td>
   <td><code>channels.whatsapp.access_token</code></td>
-  <td>Yes</td>
   <td>Meta API access token</td>
 </tr>
 <tr>
   <td><code>WHATSAPP_WEBHOOK_VERIFY_TOKEN</code></td>
-  <td><code>channels.whatsapp.webhook_verify_token</code></td>
-  <td>Yes</td>
+  <td><code>channels.whatsapp.verify_token</code></td>
   <td>Webhook verification challenge</td>
+</tr>
+<tr>
+  <td><code>WHATSAPP_APP_SECRET</code></td>
+  <td><code>channels.whatsapp.app_secret</code></td>
+  <td>HMAC-SHA256 signing secret</td>
 </tr>
 </tbody>
 </table>
 
-<h3>Webhook Verification</h3>
+<h3>Webhook Verification (Meta)</h3>
 
-<p>Meta sends a <code>GET</code> challenge with <code>hub.mode</code>, <code>hub.verify_token</code>, and <code>hub.challenge</code> parameters. Emissary responds with the challenge value only if the verify token matches — otherwise 403.</p>
-
-<h3>Inbound Messages</h3>
-
-<p>Emissary handles WhatsApp text and media messages. The adapter parses the webhook payload, resolves the sender identity, and enters the pipeline.</p>
-
-<p></div></p>
-</details>
+<p>Meta sends a <code>GET</code> challenge with <code>hub.mode</code>, <code>hub.verify_token</code>, and <code>hub.challenge</code> parameters. Emissary responds with the challenge value only if the verify token matches — otherwise 403. Per-request verification uses <code>X-Hub-Signature-256</code> (HMAC-SHA256).</p>
 
 
         <div class="next-link">

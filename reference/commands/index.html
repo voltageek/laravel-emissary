@@ -421,6 +421,60 @@ php artisan emissary:prune --days=30           # Clean old data</code></pre>
 </tbody>
 </table>
 
+<h3>WAHA Session Commands</h3>
+
+<p>Manage WAHA WhatsApp sessions from the CLI.</p>
+
+<pre><code class="language-bash">php artisan emissary:waha:session:start {session?}
+php artisan emissary:waha:session:status {session?}
+php artisan emissary:waha:session:stop {session?}
+php artisan emissary:waha:session:restart {session?}
+php artisan emissary:waha:session:qr {session?}
+php artisan emissary:waha:session:list
+php artisan emissary:waha:session:delete {session?}
+</code></pre>
+
+<table>
+<thead>
+<tr>
+  <th>Command</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>waha:session:start</code></td>
+  <td>Create, start, and watch a session; configure webhook; display QR code</td>
+</tr>
+<tr>
+  <td><code>waha:session:status</code></td>
+  <td>Print current session state and QR code if applicable</td>
+</tr>
+<tr>
+  <td><code>waha:session:stop</code></td>
+  <td>Stop a running session</td>
+</tr>
+<tr>
+  <td><code>waha:session:restart</code></td>
+  <td>Restart a session (stop then start)</td>
+</tr>
+<tr>
+  <td><code>waha:session:qr</code></td>
+  <td>Fetch and display the raw QR code</td>
+</tr>
+<tr>
+  <td><code>waha:session:list</code></td>
+  <td>List all sessions and their statuses</td>
+</tr>
+<tr>
+  <td><code>waha:session:delete</code></td>
+  <td>Delete a session; warns if currently WORKING</td>
+</tr>
+</tbody>
+</table>
+
+<p>The optional <code>{session?}</code> argument defaults to the config value (<code>WAHA_SESSION</code> / <code>channels.whatsapp.waha_session</code>).</p>
+
 
         <div class="next-link">
     <a href="https://github.com/voltageek/laravel-emissary">View the source on GitHub →</a>

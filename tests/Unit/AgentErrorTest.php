@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Emissary\AgentError;
 
-test('all 15 AgentError constants are defined with correct values', function (): void {
+test('all 16 AgentError constants are defined with correct values', function (): void {
     expect(AgentError::GUARD_DENIED)->toBe('guard.denied');
     expect(AgentError::AUTH_UNAUTHENTICATED)->toBe('auth.unauthenticated');
     expect(AgentError::AUTH_UNAUTHORIZED)->toBe('auth.unauthorized');
@@ -20,4 +20,5 @@ test('all 15 AgentError constants are defined with correct values', function ():
     expect(AgentError::COST_LIMIT_EXCEEDED)->toBe('cost.limit_exceeded');
     expect(AgentError::ONBOARDING_REQUIRED)->toBe('onboarding.required');
     expect(AgentError::CONVERSATION_MAX_TURNS)->toBe('conversation.max_turns');
+    expect(AgentError::CHANNEL_DELIVERY_FAILED)->toBe('channel.delivery_failed');
 });

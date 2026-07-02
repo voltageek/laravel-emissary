@@ -14,7 +14,7 @@ use Emissary\OutboundMessage;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
-class WhatsAppAdapter implements ChannelAdapter
+class MetaWhatsAppAdapter implements ChannelAdapter
 {
     public function __construct(
         private ChannelCredentialStore $credentialStore,
@@ -116,7 +116,6 @@ class WhatsAppAdapter implements ChannelAdapter
                 ],
             ]);
         } catch (\Throwable) {
-            // fail silently — observability events catch this upstream
         }
     }
 }

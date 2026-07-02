@@ -126,7 +126,13 @@ return [
 
     'channels' => [
         'whatsapp' => [
-            'adapter'        => Emissary\Channels\WhatsAppAdapter::class,
+            'backend'        => env('WHATSAPP_BACKEND', 'waha'),
+            'adapter'        => \Emissary\Channels\WahaWhatsAppAdapter::class,
+            'waha_api_url'   => env('WAHA_API_URL', 'http://localhost:3000'),
+            'waha_api_key'   => env('WAHA_API_KEY'),
+            'waha_session'   => env('WAHA_SESSION', 'default'),
+            'waha_hmac_key'  => env('WAHA_HMAC_KEY'),
+            'waha_version'   => env('WAHA_VERSION', 'free'),
             'access_token'   => env('WHATSAPP_ACCESS_TOKEN'),
             'phone_number_id'=> env('WHATSAPP_PHONE_NUMBER_ID'),
             'app_secret'     => env('WHATSAPP_APP_SECRET'),
@@ -175,6 +181,7 @@ return [
         'llm.rate_limited'        => 'I\'m temporarily unavailable. Please try again shortly.',
         'llm.error'               => 'I encountered an error. Please try again.',
         'conversation.max_turns'  => 'We\'ve reached the limit for this conversation. Start a new one?',
+        'channel.delivery_failed' => 'I couldn\'t deliver that message. Please try again.',
     ],
 
     /*

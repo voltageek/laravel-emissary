@@ -21,4 +21,5 @@ final class AgentError
     public const COST_LIMIT_EXCEEDED = 'cost.limit_exceeded';
     public const ONBOARDING_REQUIRED = 'onboarding.required';
     public const CONVERSATION_MAX_TURNS = 'conversation.max_turns';
+    public const CHANNEL_DELIVERY_FAILED = 'channel.delivery_failed';
 }

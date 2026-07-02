@@ -92,11 +92,17 @@ This creates `config/emissary.php` in your app. All behavior is config-driven.
 <table>
 <tr><th>Key</th><th>Type</th><th>Default</th><th>Security</th></tr>
 <tr><td><code>webhook_path</code></td><td>string</td><td><code>webhooks</code></td><td>Public</td></tr>
- <tr><td><code>channels.whatsapp.adapter</code></td><td>class</td><td><code>WhatsAppAdapter::class</code></td><td>Internal</td></tr>
- <tr><td><code>channels.whatsapp.access_token</code></td><td>string</td><td>—</td><td><strong>Secret</strong></td></tr>
- <tr><td><code>channels.whatsapp.phone_number_id</code></td><td>string</td><td>—</td><td>Public</td></tr>
- <tr><td><code>channels.whatsapp.app_secret</code></td><td>string</td><td>—</td><td><strong>Secret</strong></td></tr>
- <tr><td><code>channels.whatsapp.verify_token</code></td><td>string</td><td>—</td><td>Public</td></tr>
+ <tr><td><code>channels.whatsapp.backend</code></td><td>string</td><td><code>waha</code></td><td>Public</td></tr>
+ <tr><td><code>channels.whatsapp.adapter</code></td><td>class</td><td><code>WahaWhatsAppAdapter::class</code></td><td>Internal</td></tr>
+ <tr><td><code>channels.whatsapp.waha_api_url</code></td><td>string</td><td><code>http://localhost:3000</code></td><td>Public</td></tr>
+ <tr><td><code>channels.whatsapp.waha_api_key</code></td><td>string</td><td>—</td><td><strong>Secret</strong></td></tr>
+ <tr><td><code>channels.whatsapp.waha_session</code></td><td>string</td><td><code>default</code></td><td>Public</td></tr>
+ <tr><td><code>channels.whatsapp.waha_hmac_key</code></td><td>string</td><td>—</td><td><strong>Secret</strong></td></tr>
+ <tr><td><code>channels.whatsapp.waha_version</code></td><td>string</td><td><code>free</code></td><td>Public</td></tr>
+ <tr><td><em>channels.whatsapp.access_token</em></td><td>string</td><td>—</td><td><strong>Secret</strong> (legacy Meta)</td></tr>
+ <tr><td><em>channels.whatsapp.phone_number_id</em></td><td>string</td><td>—</td><td>Public (legacy Meta)</td></tr>
+ <tr><td><em>channels.whatsapp.app_secret</em></td><td>string</td><td>—</td><td><strong>Secret</strong> (legacy Meta)</td></tr>
+ <tr><td><em>channels.whatsapp.verify_token</em></td><td>string</td><td>—</td><td>Public (legacy Meta)</td></tr>
  <tr><td><code>channels.telegram.adapter</code></td><td>class</td><td><code>TelegramAdapter::class</code></td><td>Internal</td></tr>
  <tr><td><code>channels.telegram.bot_token</code></td><td>string</td><td>—</td><td><strong>Secret</strong></td></tr>
  <tr><td><code>channels.telegram.secret_token</code></td><td>string</td><td>—</td><td><strong>Secret</strong></td></tr>
@@ -130,6 +136,7 @@ Env overrides: `WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_AP
 | `error_messages.onboarding.required` | — | "Let's get you set up first." |
 | `error_messages.agent.max_rounds` | — | "I've reached my step limit." |
 | `error_messages.conversation.max_turns` | — | "We've reached the limit. Start a new one?" |
+| `error_messages.channel.delivery_failed` | — | "I couldn't deliver that message. Please try again." |
 
 ## Cost Alerts
 

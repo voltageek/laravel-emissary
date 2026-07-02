@@ -26,6 +26,11 @@ class FakeChannelAdapter implements ChannelAdapter
         return new self(channel: Channel::WhatsApp, conversationRef: $conversationRef ?? 'wa_test_user');
     }
 
+    public static function waha(?string $conversationRef = null): self
+    {
+        return new self(channel: Channel::WhatsApp, conversationRef: $conversationRef ?? '12345678901@c.us');
+    }
+
     public static function telegram(?string $conversationRef = null): self
     {
         return new self(channel: Channel::Telegram, conversationRef: $conversationRef ?? 'tg_test_user');

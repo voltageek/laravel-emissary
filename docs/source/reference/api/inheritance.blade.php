@@ -68,6 +68,8 @@ classDiagram
 
     AppPlugin ..|> AgentToolProvider
     CustomGuard ..|> AgentGuard
+    WahaWhatsAppAdapter ..|> ChannelAdapter
+    MetaWhatsAppAdapter ..|> ChannelAdapter
     TelegramAdapter ..|> ChannelAdapter
     WhatsAppAdapter ..|> ChannelAdapter
     WebChatAdapter ..|> ChannelAdapter

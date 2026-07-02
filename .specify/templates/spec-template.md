@@ -1,64 +1,44 @@
-# [SPEC_TITLE]
+# [FEATURE NAME]
 
-> Spec version: [VERSION] · Status: [Draft | Review | Approved] · Related files: [LINKS]
+> Spec version: 1.0 · Status: Draft
 
 ## Purpose
 
-[ONE_PARAGRAPH_PURPOSE]
+[One paragraph describing why this feature exists and what problem it solves.]
 
-## Scope
+## User Scenarios & Testing
 
-### In Scope
+### Scenario 1: [Primary flow name]
 
-- [SCOPE_ITEM_1]
-- [SCOPE_ITEM_2]
+[Step-by-step user journey]
 
-### Out of Scope
+### Scenario 2: [Edge case / alternative flow]
 
-- [OUT_OF_SCOPE_ITEM_1]
+[Step-by-step user journey]
 
-## Interfaces / Contracts
+## Functional Requirements
 
-```php
-[INTERFACE_DEFINITION]
-```
-
-## Data Models
-
-| Table/Model | Fields | Notes |
+| # | Requirement | Acceptance Criteria |
 |---|---|---|
-| [TABLE] | [FIELDS] | [NOTES] |
+| FR1 | [Requirement description] | [How to verify] |
 
-## Behaviour (EARS)
+## Success Criteria
 
-- **WHEN** [TRIGGER] **THE SYSTEM SHALL** [RESPONSE]
-- **IF** [PRECONDITION] **WHEN** [TRIGGER] **THE SYSTEM SHALL** [RESPONSE]
+1. [Measurable outcome 1]
+2. [Measurable outcome 2]
 
-## Events
+## Key Entities
 
-| Event | Trigger | Data |
-|---|---|---|
-| [EVENT_CLASS] | [TRIGGER] | [DATA] |
+- **[Entity Name]** — [Brief description]
 
-## Security
+## Assumptions
 
-- [SECURITY_CONTROL_1]
-- [SECURITY_CONTROL_2]
+1. [Assumption 1]
 
-## Configuration
+## Dependencies
 
-```php
-// config/emissary.php
-[CONFIG_KEYS]
-```
+- [Dependency 1]
 
-## Acceptance Criteria
+## Out of Scope
 
-- [ ] [CRITERION_1]
-- [ ] [CRITERION_2]
-
-## Cross-References
-
-- Architecture: `specs/01-architecture.md`
-- Contracts: `specs/02-contracts.md`
-- Pipeline: `specs/03-pipeline.md`
+- [Explicitly excluded item]

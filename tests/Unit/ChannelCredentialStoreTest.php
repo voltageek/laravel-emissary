@@ -10,6 +10,7 @@ uses(TestCase::class);
 
 test('resolves WhatsApp credentials from config', function (): void {
     config()->set('emissary.channels.whatsapp', [
+        'backend' => 'meta',
         'app_secret' => 'test-secret',
         'access_token' => 'test-token',
         'phone_number_id' => '12345',

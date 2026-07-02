@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Emissary;
 
+use Emissary\Channel;
+use Emissary\Channels\MetaWhatsAppAdapter;
+use Emissary\Channels\WahaWhatsAppAdapter;
+use Emissary\Contracts\ChannelAdapter;
 use Emissary\Contracts\ChannelCredentialStore;
 use Emissary\Contracts\ChannelIdentityResolver;
 use Emissary\Contracts\ConfirmationGate;
@@ -58,6 +62,15 @@ class EmissaryServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(ConfirmationGate::class, DatabaseConfirmationGate::class);
+
+        $this->app->bind(ChannelAdapter::class . '.whatsapp', function (): ChannelAdapter {
+            $backend = config('emissary.channels.whatsapp.backend', 'waha');
+
+            return match ($backend) {
+                'meta' => $this->app->make(MetaWhatsAppAdapter::class),
+                default => $this->app->make(WahaWhatsAppAdapter::class),
+            };
+        });
     }
 
     protected function publishables(): void
@@ -93,6 +106,13 @@ class EmissaryServiceProvider extends ServiceProvider
                 \Emissary\Commands\EmissaryOnboardingStatus::class,
                 \Emissary\Commands\EmissaryOnboardingReset::class,
                 \Emissary\Commands\EmissaryFixtureCapture::class,
+                \Emissary\Commands\EmissaryWahaSessionStart::class,
+                \Emissary\Commands\EmissaryWahaSessionStatus::class,
+                \Emissary\Commands\EmissaryWahaSessionStop::class,
+                \Emissary\Commands\EmissaryWahaSessionRestart::class,
+                \Emissary\Commands\EmissaryWahaSessionQr::class,
+                \Emissary\Commands\EmissaryWahaSessionList::class,
+                \Emissary\Commands\EmissaryWahaSessionDelete::class,
             ]);
         }
     }

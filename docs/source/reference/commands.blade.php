@@ -135,4 +135,30 @@ php artisan emissary:fixture:capture {turnId}
 | Argument | Description |
 |---|---|
 | `turnId` | Turn to capture as fixture |
+
+### WAHA Session Commands
+
+Manage WAHA WhatsApp sessions from the CLI.
+
+```bash
+php artisan emissary:waha:session:start {session?}
+php artisan emissary:waha:session:status {session?}
+php artisan emissary:waha:session:stop {session?}
+php artisan emissary:waha:session:restart {session?}
+php artisan emissary:waha:session:qr {session?}
+php artisan emissary:waha:session:list
+php artisan emissary:waha:session:delete {session?}
+```
+
+| Command | Description |
+|---|---|
+| `waha:session:start` | Create, start, and watch a session; configure webhook; display QR code |
+| `waha:session:status` | Print current session state and QR code if applicable |
+| `waha:session:stop` | Stop a running session |
+| `waha:session:restart` | Restart a session (stop then start) |
+| `waha:session:qr` | Fetch and display the raw QR code |
+| `waha:session:list` | List all sessions and their statuses |
+| `waha:session:delete` | Delete a session; warns if currently WORKING |
+
+The optional `{session?}` argument defaults to the config value (`WAHA_SESSION` / `channels.whatsapp.waha_session`).
 @endsection
